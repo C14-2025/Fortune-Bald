@@ -1,0 +1,39 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# --- Ambientes virtuais ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Poetry ---
+poetry.lock
+*.egg-info/
+dist/
+build/
+
+# --- Testes e Cobertura ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.tox/
+.nox/
+
+# --- IDEs ---
+.idea/
+.vscode/
+*.iml
+
+# --- Logs e temporários ---
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
