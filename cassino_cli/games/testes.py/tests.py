@@ -21,3 +21,39 @@ def test_slots_spin_returns_valid_symbols():
     assert isinstance(combo, list) and len(combo) == 3
     for sym in combo:
         assert sym in slots.SYMBOLS
+
+def test_slots_play_one_winning_round_updates_saldo(monkeypatch, capsys):
+    # Força o último giro a ser 7-7-7
+    monkeypatch.setattr(slots, "_spin", lambda: ["⿧", "⿧", "⿧"])
+    # Evita dormir nas animações
+    import time
+    monkeypatch.setattr(time, "sleep", lambda *_args, **_kw: None)
+
+    # Primeiro confirm = True (girar), segundo = False (não girar de novo)
+    confirms = iter([True, False])
+    def fake_confirm(*_a, **_kw):
+        return next(confirms)
+    import click
+    monkeypatch.setattr(click, "confirm", fake_confirm)
+
+    saldo_inicial, aposta = 100, 5
+    slots.play_slots(saldo_inicial, aposta)
+    out = capsys.readouterr().out
+    # Ganhou x50: saldo final = 100 - 5 + 250 = 345
+    assert "Saldo final: $345" in out
+
+
+def test_slots_stops_when_insufficient_initial(monkeypatch, capsys):
+    # Não entra no loop porque saldo < aposta
+    slots.play_slots(4, 5)
+    out = capsys.readouterr().out
+    assert "Saldo final: $4" in out
+
+def test_slots_payouts_map_uses_only_known_symbols():
+    valid = set(slots.SYMBOLS)
+    for k in slots.PAYOUTS:
+        if isinstance(k, tuple):
+            assert len(k) == 3
+            for sym in k:
+                assert sym in valid
+
