@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "cassino-cli"
+version = "0.1.0"
+description = "Cassino de terminal: Blackjack (21) e Caça-Níquel 3 imagens"
+authors = ["Seu Nome <seuemail@exemplo.com>"]
+readme = "README.md"
+packages = [{ include = "cassino_cli" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rich = "^13.7.1"
+click = "^8.1.7"
+
+[tool.poetry.scripts]
+cassino = "cassino_cli.__main__:app"
+
+[build-system]
+requires = ["poetry-core>=1.8.0"]
+build-backend = "poetry.core.masonry.api"
