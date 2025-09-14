@@ -75,4 +75,28 @@ def test_blackjack_no_round_when_saldo_less_than_aposta(capsys):
     # Não entra no while; apenas imprime saldo final
     blackjack.play_blackjack(saldo_inicial=5, aposta=10)
     out = capsys.readouterr().out
+<<<<<<< HEAD
     assert "Saldo final: $5" in out
+=======
+    assert "Saldo final: $5" in out
+=======
+# tests/test_blackjack_logic.py
+import blackjack.py  # ajuste se o módulo tiver outro nome
+
+def test_blackjack_player_wins_with_21(monkeypatch):
+    """
+    Cenário: Jogador recebe um Ás e uma Carta 10 (21),
+    enquanto o dealer recebe cartas que não somam 21.
+    O jogador deve vencer automaticamente.
+    """
+    # Simula um baralho fixo (pop de trás pra frente):
+    # Ordem: player1 -> dealer1 -> player2 -> dealer2
+    deck = [
+        ("K", "♠"),   # player2 (10)
+        ("9", "♥"),   # dealer2 (9)
+        ("A", "♣"),   # player1 (11)
+        ("7", "♦"),   # dealer1 (7)
+    ]
+
+    monkey
+>>>>>>> 45d9276 (Teste blackjack)
