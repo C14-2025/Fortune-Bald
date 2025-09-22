@@ -34,20 +34,20 @@ def test_slots_spin_returns_valid_symbols(mock_spin):
     assert isinstance(combo, list) and len(combo) == 3
     for sym in combo:
         assert sym in slots.SYMBOLS
-def test_slots_play_one_winning_round_updates_saldo(monkeypatch, capsys):
 
-    monkeypatch.setattr(slots, "_spin", lambda: ["⿧", "⿧", "⿧"])
-    import time
-    monkeypatch.setattr(time, "sleep", lambda *_args, **_kw: None)
-
-    confirms = iter([True, False])
-    def fake_confirm(*_a, **_kw):
-        return next(confirms)
-    import click
-    monkeypatch.setattr(click, "confirm", fake_confirm)
-
+def test_slots_play_one_winning_round_updates_saldo_mock(capsys):
     saldo_inicial, aposta = 100, 5
-    slots.play_slots(saldo_inicial, aposta)
+
+    with patch('slots._spin') as mock_spin, \
+         patch('time.sleep'), \
+         patch('click.confirm') as mock_confirm:
+
+        mock_spin.return_value = ["⿧", "⿧", "⿧"]
+
+        mock_confirm.side_effect = [True, False]
+
+        slots.play_slots(saldo_inicial, aposta)
+
     out = capsys.readouterr().out
     assert "Saldo final: $345" in out
 
