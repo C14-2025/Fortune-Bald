@@ -5,6 +5,7 @@ from cassino_cli.games import blackjack
 from cassino_cli.games import slots
 import slots
 from unittest.mock import patch
+import blackjack
 
 def test_slots_payout_triple_cherries():
     assert slots._payout(["🍒", "🍒", "🍒"]) == 5
@@ -66,21 +67,20 @@ def test_slots_payouts_map_uses_only_known_symbols():
             for sym in k:
                 assert sym in valid
 
-def test_blackjack_deal_card_refills_deck(monkeypatch):
-
-    def fake_new_shuffled_deck(_n):
-        return [("A", "♠")]
-    monkeypatch.setattr(blackjack, "new_shuffled_deck", fake_new_shuffled_deck)
-
-    deck = []  
-    card = blackjack._deal_card(deck)
-    assert card == ("A", "♠")
-  
-    assert deck == []
+def test_blackjack_deal_card_refills_deck():
+    # new_shuffled_deck retorna 1 carta conhecida
+    with patch("blackjack.new_shuffled_deck", return_value=[("A", "♠")]):
+        deck = []  # vazio -> deve reabastecer
+        card = blackjack._deal_card(deck)
+        assert card == ("A", "♠")
+        # após pop, deck fica vazio de novo
+        assert deck == []
 
 
 def test_blackjack_no_round_when_saldo_less_than_aposta(capsys):
- 
-    blackjack.play_blackjack(saldo_inicial=5, aposta=10)
-    out = capsys.readouterr().out
+    with patch("builtins.print") as mock_print:
+        blackjack.play_blackjack(saldo_inicial=5, aposta=10)
+
+        # verifica se "Saldo final: $5" foi impresso
+        mock_print.assert_any_call("Saldo final: $5")
 
