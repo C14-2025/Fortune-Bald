@@ -1,32 +1,20 @@
-# Cassino CLI (Blackjack + Caça-Níquel)
+# Fortune Bald
 
-## Requisitos
-- Python 3.10+
-- Poetry (`pip install poetry` ou `python -m pip install poetry`)
+Fortune Bald é um jogo de cassino simples que oferece jogos como *Blackjack* e *Caça-Níquel*. O objetivo é criar uma experiência de cassino divertida e fácil de jogar diretamente do terminal. Este repositório contém o código para executar esses jogos no seu ambiente local.
 
-## Instalação (Poetry)
-```bash
-poetry install
-poetry run cassino --help
-```
+## Jogos Disponíveis
 
-## Rodando
-```bash
-# Blackjack
-poetry run cassino blackjack
+- *Blackjack*: O tradicional jogo de cartas onde o objetivo é alcançar o número 21 ou o mais próximo disso, sem ultrapassar.
+- *Caça-Níquel*: Um jogo de azar onde o objetivo é conseguir uma combinação vencedora de símbolos em uma máquina de slots.
 
-# Caça-Níquel
-poetry run cassino slots
-```
+## Tecnologias Utilizadas
 
-## Gerando artefatos (build)
-```bash
-poetry build
-# -> dist/cassino_cli-0.1.0-py3-none-any.whl e .tar.gz
-```
+- *Python*: A linguagem de programação utilizada para implementar os jogos.
+- *Bibliotecas*: random para gerar números aleatórios, time para manipulação de tempo e sys para interação com o sistema.
 
-## Instalando o pacote localmente
-```bash
-pip install dist/cassino_cli-0.1.0-py3-none-any.whl
-cassino --help
-```
+## Instalação
+
+1. Clone este repositório para o seu computador:
+   ```bash
+   git clone https://github.com/C14-2025/Fortune-Bald.git
+   cd Fortune-Bald
