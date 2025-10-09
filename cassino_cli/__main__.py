@@ -13,16 +13,16 @@ def app():
     console.print(Panel.fit("🎰 [bold]Cassino CLI[/bold] – Divirta-se com responsabilidade!"))
 
 @app.command(help="Jogar Blackjack (21).")
-@click.option("--saldo", default=100, show_default=True, type=int, help="Saldo inicial.")
 @click.option("--aposta", default=10, show_default=True, type=int, help="Aposta por rodada.")
-def blackjack(saldo: int, aposta: int):
-    play_blackjack(saldo, aposta)
+def blackjack(aposta: int):
+    saldo_inicial = click.prompt("Digite seu saldo inicial", type=int)
+    play_blackjack( aposta)
 
 @app.command(help="Jogar Caça-Níquel (3 imagens).")
-@click.option("--saldo", default=100, show_default=True, type=int, help="Saldo inicial.")
 @click.option("--aposta", default=5, show_default=True, type=int, help="Aposta por rodada.")
-def slots(saldo: int, aposta: int):
-    play_slots(saldo, aposta)
+def slots(aposta: int):
+    saldo_inicial = click.prompt("Digite seu saldo inicial", type=int)
+    play_slots(saldo_inicial, aposta)
 
 if __name__ == "__main__":
     try:
