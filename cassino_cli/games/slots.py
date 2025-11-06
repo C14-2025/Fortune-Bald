@@ -29,43 +29,42 @@ def _payout(combo):
         return PAYOUTS["pair"]
     return 0
 
-def _get_bet_input(saldo):
-    while True:
-        aposta = click.prompt(f"Aposta por rodada (Saldo: ${saldo}):", type=int)
-        if aposta <= saldo:
-            return aposta
-        console.print("[red]Saldo insuficiente para essa aposta. Tente novamente.[/red]")
-
 def play_slots(saldo_inicial: int, aposta: int):
+
     saldo = saldo_inicial
     console.rule("[bold]Caça-Níquel[/bold]")
 
-    while saldo >= aposta:
-        console.print(f"Saldo: [bold]${saldo}[/bold] | Aposta: [bold]${aposta}[/bold]")
-        click.confirm("Girar?", default=True, abort=True)
+    try:
+        while saldo >= aposta:
+            console.print(f"Saldo: [bold]${saldo}[/bold] | Aposta: [bold]${aposta}[/bold]")
+            click.confirm("Girar?", default=True, abort=True)
 
-        reels = [" ", " ", " "]
-        for i in range(10):
-            reels = _spin()
-            panel = Panel(Align.center(" | ".join(reels), vertical="middle"), title="Girando…")
-            console.clear()
-            console.print(panel)
-            time.sleep(0.07 + i * 0.01)
+            reels = [" ", " ", " "]
+            for i in range(10):
+                reels = _spin()
+                panel = Panel(Align.center(" | ".join(reels), vertical="middle"), title="Girando…")
+                console.clear()
+                console.print(panel)
+                time.sleep(0.07 + i * 0.01)
 
-        ganho_mult = _payout(reels)
-        ganho = aposta * ganho_mult
-        saldo = saldo - aposta + ganho
+            ganho_mult = _payout(reels)
+            ganho = aposta * ganho_mult
+            saldo = saldo - aposta + ganho
 
-        if ganho_mult > 0:
-            console.print(Panel.fit(f"🎉 {reels}  Você ganhou x{ganho_mult} = ${ganho}!", style="green"))
-        else:
-            console.print(Panel.fit(f"{reels}  Nada desta vez. 😅", style="red"))
+            if ganho_mult > 0:
+                console.print(Panel.fit(f"🎉 {reels}  Você ganhou x{ganho_mult} = ${ganho}!", style="green"))
+            else:
+                console.print(Panel.fit(f"{reels}  Nada desta vez. 😅", style="red"))
 
-        if saldo < aposta:
-            console.print(Panel.fit("Saldo insuficiente para continuar.", style="yellow"))
-            break
+            if saldo < aposta:
+                console.print(Panel.fit("Saldo insuficiente para continuar.", style="yellow"))
+                break
 
-        if not click.confirm("Girar novamente?", default=True):
-            break
+            if not click.confirm("Girar novamente?", default=True):
+                break
+
+    except click.Abort:
+        console.print(Panel.fit("Operação cancelada. Voltando ao menu…", style="yellow"))
 
     console.print(Panel.fit(f"Saldo final: ${saldo}", style="cyan"))
+    return saldo

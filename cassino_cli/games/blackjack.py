@@ -28,8 +28,9 @@ def play_blackjack(saldo_inicial: int, aposta: int):
 
     while saldo >= aposta:
         console.rule("[bold]Blackjack[/bold]")
-        console.print(f"Saldo: [bold]${saldo}[/bold] | Aposta: [bold]${aposta}[/bold]")
+        console.print(f"Saldo: [bold]${saldo}[/bold] | Aposta base: [bold]${aposta}[/bold]")
 
+        round_bet = aposta
         player = [_deal_card(deck), _deal_card(deck)]
         dealer = [_deal_card(deck), _deal_card(deck)]
 
@@ -45,7 +46,7 @@ def play_blackjack(saldo_inicial: int, aposta: int):
 
             if hand_value(player) == 21:
                 console.print(Panel.fit("Blackjack! 🥳 Você ganhou 1.5x", style="green"))
-                ganho = int(aposta * 1.5)
+                ganho = int(round_bet * 1.5)
                 saldo += ganho
                 break
 
@@ -55,20 +56,26 @@ def play_blackjack(saldo_inicial: int, aposta: int):
                 player.append(_deal_card(deck))
                 if hand_value(player) > 21:
                     console.print(Panel.fit("Estourou! 😵 Você perdeu.", style="red"))
-                    saldo -= aposta
+                    saldo -= round_bet
                     break
-            elif escolha == "d" and saldo >= aposta * 2:
-                aposta *= 2
-                console.print(f"Aposta dobrada para ${aposta}.")
-                player.append(_deal_card(deck))
-                if hand_value(player) > 21:
-                    console.print(Panel.fit("Estourou após dobrar! 😵", style="red"))
-                    saldo -= aposta
-                    break
-            elif escolha == "s":
-                break
+                continue
 
-            _dealer_play(dealer, deck)
+            if escolha == "d":
+                if saldo >= round_bet * 2:
+                    round_bet *= 2
+                    console.print(f"Aposta dobrada para ${round_bet}.")
+                    player.append(_deal_card(deck))
+                    if hand_value(player) > 21:
+                        console.print(Panel.fit("Estourou após dobrar! 😵", style="red"))
+                        saldo -= round_bet
+                        break
+                    _dealer_play(dealer, deck)
+                else:
+                    console.print(Panel.fit("Saldo insuficiente para dobrar.", style="yellow"))
+                    continue
+
+            if escolha == "s":
+                _dealer_play(dealer, deck)
 
             pv, dv = hand_value(player), hand_value(dealer)
             mesa_final = Table(title="Resultado")
@@ -82,10 +89,10 @@ def play_blackjack(saldo_inicial: int, aposta: int):
 
             if dv > 21 or pv > dv:
                 console.print(Panel.fit("Você venceu! 🎉", style="green"))
-                saldo += aposta
+                saldo += round_bet
             elif pv < dv:
                 console.print(Panel.fit("Dealer venceu. 😔", style="red"))
-                saldo -= aposta
+                saldo -= round_bet
             else:
                 console.print(Panel.fit("Empate (push).", style="yellow"))
 
@@ -100,3 +107,4 @@ def play_blackjack(saldo_inicial: int, aposta: int):
             break
 
     console.print(Panel.fit(f"Saldo final: ${saldo}", style="cyan"))
+    return saldo

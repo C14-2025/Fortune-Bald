@@ -1,23 +1,22 @@
-# --- Python ---
+#Python
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 *.so
 
-# --- Ambientes virtuais ---
+#Ambientes virtuais 
 .venv/
 venv/
 env/
 ENV/
 
-# --- Poetry ---
-poetry.lock
+# Poetry
 *.egg-info/
 dist/
 build/
 
-# --- Testes e Cobertura ---
+# Testes e Cobertura
 .pytest_cache/
 .coverage
 .coverage.*
@@ -26,14 +25,16 @@ htmlcov/
 .tox/
 .nox/
 
-# --- IDEs ---
+# IDEs
 .idea/
 .vscode/
 *.iml
 
-# --- Logs e temporários ---
+# Logs e temporários 
 *.log
 *.tmp
 *.swp
 .DS_Store
 Thumbs.db
+package-lock.json
+
