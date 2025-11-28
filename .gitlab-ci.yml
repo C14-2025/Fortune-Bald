@@ -1,0 +1,71 @@
+stages:
+  - install
+  - test
+  - lint
+  - build
+  - members
+
+default:
+  image: python:3.11
+
+# ---------------------
+# 1) INSTALA DEPENDÊNCIAS
+# ---------------------
+install:
+  stage: install
+  script:
+    - pip install poetry
+    - poetry install
+  artifacts:
+    paths:
+      - .venv/
+  rules:
+    - when: always
+
+# ---------------------
+# 2) RODAR TESTES AUTOMÁTICOS
+# ---------------------
+tests:
+  stage: test
+  script:
+    - pip install poetry
+    - poetry install
+    - poetry run pytest --maxfail=1 --disable-warnings
+  rules:
+    - when: always
+
+# ---------------------
+# 3) LINT / QUALIDADE DE CÓDIGO
+# ---------------------
+lint:
+  stage: lint
+  script:
+    - pip install ruff
+    - ruff cassino_cli/
+  rules:
+    - when: always
+
+# ---------------------
+# 4) BUILD DO PROJETO (GERAR DISTRIBUIÇÃO)
+# ---------------------
+build:
+  stage: build
+  script:
+    - pip install poetry
+    - poetry install
+    - poetry build
+  artifacts:
+    paths:
+      - dist/
+  rules:
+    - when: always
+
+# ---------------------
+# 5) JOB POR INTEGRANTE
+# ---------------------
+andre:
+  stage: members
+  script:
+    - echo "Job do integrante: André"
+  rules:
+    - when: always
