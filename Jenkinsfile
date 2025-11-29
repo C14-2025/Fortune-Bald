@@ -26,7 +26,7 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                poetry install --no-interaction --no-root
+                poetry install --no-interaction
                 '''
             }
         }
