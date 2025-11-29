@@ -9,20 +9,15 @@ pipeline {
             }
         }
 
-        stage('Install Python') {
+        stage('Install Python & venv') {
             steps {
                 sh '''
                 apt-get update
-                apt-get install -y python3 python3-pip
-                '''
-            }
-        }
-
-        stage('Install Poetry') {
-            steps {
-                sh '''
-                pip3 install --upgrade pip
-                pip3 install poetry
+                apt-get install -y python3 python3-venv python3-pip
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install poetry
                 '''
             }
         }
@@ -30,6 +25,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh '''
+                . venv/bin/activate
                 poetry install --no-interaction --no-root
                 '''
             }
@@ -38,6 +34,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
+                . venv/bin/activate
                 poetry run pytest || echo "Nenhum teste encontrado"
                 '''
             }
@@ -46,6 +43,7 @@ pipeline {
         stage('Run App') {
             steps {
                 sh '''
+                . venv/bin/activate
                 poetry run python -m cassino_cli
                 '''
             }
