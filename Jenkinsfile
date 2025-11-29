@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10'
-        }
-    }
+    agent any
 
     stages {
 
@@ -13,11 +9,20 @@ pipeline {
             }
         }
 
-        stage('Setup environment') {
+        stage('Install Python') {
             steps {
                 sh '''
-                pip install --upgrade pip
-                pip install poetry
+                apt-get update
+                apt-get install -y python3 python3-pip
+                '''
+            }
+        }
+
+        stage('Install Poetry') {
+            steps {
+                sh '''
+                pip3 install --upgrade pip
+                pip3 install poetry
                 '''
             }
         }
@@ -33,7 +38,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                poetry run pytest || echo "Nenhum teste encontrado."
+                poetry run pytest || echo "Nenhum teste encontrado"
                 '''
             }
         }
@@ -48,7 +53,7 @@ pipeline {
     }
 
     post {
-        success { echo "Pipeline concluída com sucesso!" }
+        success { echo "Pipeline finalizada com sucesso!" }
         failure { echo "Pipeline falhou!" }
     }
 }
