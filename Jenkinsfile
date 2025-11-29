@@ -1,33 +1,29 @@
 pipeline {
-    agent any
-
-    environment {
-        PYTHONUNBUFFERED = '1'
+    agent {
+        docker {
+            image 'python:3.10'
+        }
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                echo "Baixando código do GitHub..."
                 checkout scm
             }
         }
 
-        stage('Setup Python') {
+        stage('Setup environment') {
             steps {
-                echo "Instalando Python e Poetry..."
                 sh '''
-                sudo apt-get update
-                sudo apt-get install -y python3 python3-pip
-                pip3 install poetry
+                pip install --upgrade pip
+                pip install poetry
                 '''
             }
         }
 
         stage('Install dependencies') {
             steps {
-                echo "Instalando dependências do projeto..."
                 sh '''
                 poetry install --no-interaction --no-root
                 '''
@@ -36,16 +32,14 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                echo "Executando testes unitários..."
                 sh '''
-                poetry run pytest || echo "Nenhum teste encontrado (ok)"
+                poetry run pytest || echo "Nenhum teste encontrado."
                 '''
             }
         }
 
-        stage('Build') {
+        stage('Run App') {
             steps {
-                echo "Rodando versão principal do projeto..."
                 sh '''
                 poetry run python -m cassino_cli
                 '''
@@ -54,11 +48,7 @@ pipeline {
     }
 
     post {
-        success {
-            echo "Pipeline concluída com sucesso!"
-        }
-        failure {
-            echo "Pipeline falhou!"
-        }
+        success { echo "Pipeline concluída com sucesso!" }
+        failure { echo "Pipeline falhou!" }
     }
 }
