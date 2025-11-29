@@ -39,13 +39,13 @@ def coletar_dados_usuario(idade_minima: int = 18):
             raise click.Abort()
 
 def app():
-    console.print(Panel.fit("🎰 [bold]Fortune-Bald[/bold] – Divirta-se com responsabilidade!"))
+    console.print(Panel.fit("[bold]Fortune-Bald[/bold] – Divirta-se com responsabilidade!"))
     print("--- Bem-vindo ao Fortune-Bald! ---")
 
     try:
         coletar_dados_usuario()
     except click.Abort:
-        console.print("\nOperação cancelada. Até mais! 👋")
+        console.print("\nOperação cancelada. Até mais!")
         sys.exit(0)
 
     saldo = 0
@@ -63,14 +63,14 @@ def app():
 
         if escolha == "0":
             console.print(f"\nSaldo final: ${saldo}", style="cyan")
-            console.print("Até mais! 👋")
+            console.print("Até mais!")
             sys.exit(0)
 
         if saldo == 0:
             try:
                 saldo = click.prompt("Digite seu saldo inicial", type=int)
             except click.Abort:
-                console.print("\nOperação cancelada. Até mais! 👋")
+                console.print("\nOperação cancelada. Até mais!")
                 sys.exit(0)
 
         if escolha == "1":
@@ -97,5 +97,5 @@ if __name__ == "__main__":
     try:
         app()
     except KeyboardInterrupt:
-        console.print("\nAté mais! 👋")
+        console.print("\nAté mais!")
         sys.exit(0)

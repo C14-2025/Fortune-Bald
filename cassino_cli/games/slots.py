@@ -54,7 +54,7 @@ def play_slots(saldo_inicial: int, aposta: int):
             if ganho_mult > 0:
                 console.print(Panel.fit(f"🎉 {reels}  Você ganhou x{ganho_mult} = ${ganho}!", style="green"))
             else:
-                console.print(Panel.fit(f"{reels}  Nada desta vez. 😅", style="red"))
+                console.print(Panel.fit(f"{reels}  Nada desta vez.", style="red"))
 
             if saldo < aposta:
                 console.print(Panel.fit("Saldo insuficiente para continuar.", style="yellow"))

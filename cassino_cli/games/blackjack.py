@@ -45,7 +45,7 @@ def play_blackjack(saldo_inicial: int, aposta: int):
             console.print(table)
 
             if hand_value(player) == 21:
-                console.print(Panel.fit("Blackjack! 🥳 Você ganhou 1.5x", style="green"))
+                console.print(Panel.fit("Blackjack! Você ganhou 1.5x", style="green"))
                 ganho = int(round_bet * 1.5)
                 saldo += ganho
                 break
@@ -55,7 +55,7 @@ def play_blackjack(saldo_inicial: int, aposta: int):
             if escolha == "h":
                 player.append(_deal_card(deck))
                 if hand_value(player) > 21:
-                    console.print(Panel.fit("Estourou! 😵 Você perdeu.", style="red"))
+                    console.print(Panel.fit("Estourou! Você perdeu.", style="red"))
                     saldo -= round_bet
                     break
                 continue
@@ -66,7 +66,7 @@ def play_blackjack(saldo_inicial: int, aposta: int):
                     console.print(f"Aposta dobrada para ${round_bet}.")
                     player.append(_deal_card(deck))
                     if hand_value(player) > 21:
-                        console.print(Panel.fit("Estourou após dobrar! 😵", style="red"))
+                        console.print(Panel.fit("Estourou após dobrar!", style="red"))
                         saldo -= round_bet
                         break
                     _dealer_play(dealer, deck)
@@ -88,10 +88,10 @@ def play_blackjack(saldo_inicial: int, aposta: int):
             console.print(mesa_final)
 
             if dv > 21 or pv > dv:
-                console.print(Panel.fit("Você venceu! 🎉", style="green"))
+                console.print(Panel.fit("Você venceu!", style="green"))
                 saldo += round_bet
             elif pv < dv:
-                console.print(Panel.fit("Dealer venceu. 😔", style="red"))
+                console.print(Panel.fit("Dealer venceu.", style="red"))
                 saldo -= round_bet
             else:
                 console.print(Panel.fit("Empate (push).", style="yellow"))
