@@ -1,6 +1,6 @@
 # Fortune Bald
 
-Fortune Bald é um jogo de cassino simples que oferece jogos como *Blackjack* e *Caça-Níquel*. O objetivo é criar uma experiência de cassino divertida e fácil de jogar diretamente do terminal. Este repositório contém o código para executar esses jogos no seu ambiente local.
+Fortune Bald é um jogo de cassino simples que oferece jogos como *Blackjack* e *Caça-Níquel*. O objetivo é criar uma experiência de cassino divertida e fácil de jogar diretamente do terminal. Este repositório contém o código para executar esses jogos no seu ambiente local;
 
 ## Jogos Disponíveis
 
