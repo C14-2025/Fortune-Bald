@@ -31,12 +31,39 @@ pipeline {
             }
         }
 
+        stage('Build Artifact') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                poetry build
+                '''
+            }
+        }
+    }
+
+    // Adicione isso para salvar o arquivo gerado no Jenkins
+    post {
+        success {
+            archiveArtifacts artifacts: 'dist/*', allowEmptyArchive: true
+            echo "Pipeline finalizada com sucesso!"
+        }
+        failure { echo "Pipeline falhou!" }
+    }
+
+
         stage('Run Tests') {
             steps {
                 sh '''
                 . venv/bin/activate
-                poetry run pytest || echo "Nenhum teste encontrado"
+                # --junitxml gera o relatório que o Jenkins entende
+                # Removemos o "|| echo" para que a pipeline falhe se os testes falharem
+                poetry run pytest --junitxml=test-results.xml
                 '''
+            }
+            post {
+                always {
+                    junit 'test-results.xml'
+                }
             }
         }
 
@@ -48,7 +75,6 @@ pipeline {
                 '''
             }
         }
-    }
 
     post {
         success { echo "Pipeline finalizada com sucesso!" }
