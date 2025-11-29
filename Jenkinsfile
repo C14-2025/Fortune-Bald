@@ -26,7 +26,17 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                poetry install --no-interaction --no-root
+                poetry install --no-interaction
+                '''
+            }
+        }
+
+        stage('Build Artifact') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                # Gera os arquivos na pasta dist/
+                poetry build
                 '''
             }
         }
@@ -35,8 +45,15 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                poetry run pytest || echo "Nenhum teste encontrado"
+                # Roda testes e gera o XML. Falha a pipeline se tiver erro.
+                poetry run pytest --junitxml=test-results.xml
                 '''
+            }
+            // Este post é ESPECÍFICO do estágio de testes para ler o XML
+            post {
+                always {
+                    junit 'test-results.xml'
+                }
             }
         }
 
@@ -50,8 +67,15 @@ pipeline {
         }
     }
 
+    // Este post roda no final de TUDO
     post {
-        success { echo "Pipeline finalizada com sucesso!" }
-        failure { echo "Pipeline falhou!" }
+        success {
+            // Salva o artefato gerado no estágio 'Build Artifact'
+            archiveArtifacts artifacts: 'dist/*', allowEmptyArchive: true
+            echo "Pipeline finalizada com sucesso!"
+        }
+        failure {
+            echo "Pipeline falhou!"
+        }
     }
 }
