@@ -31,11 +31,11 @@ def test_valor_mao_com_dois_as():
 def test_blackjack_player_busts(monkeypatch, capsys):
     def mock_deal_card(deck):
         if not deck:
-            deck.extend([("K", "♣"), ("Q", "♦"), ("9", "♥"), ("8", "♠")])
+            deck.extend([("5", "♣"), ("K", "♦"), ("K", "♠")])
         return deck.pop()
 
     def mock_get_player_action():
-        return "h"
+        return "h"  
 
     monkeypatch.setattr(blackjack, "_deal_card", mock_deal_card)
     monkeypatch.setattr(blackjack, "_get_player_action", mock_get_player_action)
