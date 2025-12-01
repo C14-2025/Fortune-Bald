@@ -2,7 +2,12 @@
 name = "cassino-cli"
 version = "0.1.0"
 description = "Cassino de terminal: Blackjack (21) e Caça-Níquel 3 imagens"
-authors = ["Seu Nome <seuemail@exemplo.com>"]
+authors = [
+  "Kaik",
+  "André",
+  "Arthur",
+  "Marcus"
+]
 readme = "README.md"
 packages = [{ include = "cassino_cli" }]
 

@@ -2,7 +2,7 @@ from cassino_cli.games import blackjack
 import pytest
 
 
-def test_blackjack_deal_card_refills_deck(monkeypatch):
+def test_blackjack_refills_deck(monkeypatch):
     monkeypatch.setattr(
         blackjack,
         "new_shuffled_deck",
@@ -15,16 +15,16 @@ def test_blackjack_deal_card_refills_deck(monkeypatch):
     assert len(deck) == 1
     assert deck[0] == ("A", "♠")
 
-def test_blackjack_no_round_when_saldo_less_than_aposta(capsys):
+def test_blackjack_insufficient_balance(capsys):
     blackjack.play_blackjack(saldo_inicial=5, aposta=10)
     out = capsys.readouterr().out
     assert "Saldo final: $5" in out
 
-def test_valor_mao_com_as_e_cartas_altas():
+def test_valor_As_high_card():
     mao = [("A", "♠"), ("9", "♥")]
     assert blackjack.hand_value(mao) == 20
 
-def test_valor_mao_com_dois_as():
+def test_valor_two_as():
     mao = [("A", "♠"), ("A", "♥")]
     assert blackjack.hand_value(mao) == 12
 
