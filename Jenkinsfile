@@ -31,29 +31,26 @@ pipeline {
             }
         }
 
-        stage('Build Artifact') {
-            steps {
-                sh '''
-                . venv/bin/activate
-                # Gera os arquivos na pasta dist/
-                poetry build
-                '''
-            }
-        }
-
         stage('Run Tests') {
             steps {
                 sh '''
                 . venv/bin/activate
-                # Roda testes e gera o XML. Falha a pipeline se tiver erro.
                 poetry run pytest --junitxml=test-results.xml
                 '''
             }
-            // Este post é ESPECÍFICO do estágio de testes para ler o XML
             post {
                 always {
                     junit 'test-results.xml'
                 }
+            }
+        }
+
+		stage('Build Artifact') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                poetry build
+                '''
             }
         }
 
@@ -67,10 +64,8 @@ pipeline {
         }
     }
 
-    // Este post roda no final de TUDO
     post {
         success {
-            // Salva o artefato gerado no estágio 'Build Artifact'
             archiveArtifacts artifacts: 'dist/*', allowEmptyArchive: true
             echo "Pipeline finalizada com sucesso!"
         }
