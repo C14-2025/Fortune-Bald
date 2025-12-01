@@ -17,4 +17,5 @@ Fortune Bald é um jogo de cassino simples que oferece jogos como *Blackjack* e 
 1. Clone este repositório para o seu computador:
    ```bash
    git clone https://github.com/C14-2025/Fortune-Bald.git
-   
+
+   teste de pipeline
